@@ -2,8 +2,9 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2020-11-25 15:34:01
+ * @LastEditTime: 2020-11-27 21:06:25
  */
+const path =  require('path');
 const config = {
   projectName: 'school_vote',
   date: '2020-11-25',
@@ -15,6 +16,9 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: `dist/${process.env.TARO_ENV}`,
+  alias: {
+    '@': path.resolve(__dirname, '..', 'src')
+  },
   plugins: [],
   defineConstants: {
   },

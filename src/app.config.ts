@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2020-11-25 18:48:21
+ * @LastEditTime: 2020-11-25 18:48:35
  */
 export default {
   pages: [
@@ -13,5 +13,33 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black'
-  }
+  },
+  tabBar: {
+    color: '#BFBDBC',
+    selectedColor: '#000',
+    borderStyle: 'black',
+    backgroundColor: '#F7F7F7',
+    list: [
+      {
+        selectedIconPath: 'assets/img/bar/alipay-home-act.png',
+        iconPath: 'assets/img/bar/alipay-home-normal.png',
+        pagePath: 'pages/index/index',
+        text: '首页'
+      },
+      {
+        selectedIconPath: 'assets/img/bar/alipay-my-act.png',
+        iconPath: 'assets/img/bar/alipay-my-normal.png',
+        pagePath: 'pages/my/index',
+        text: '我的'
+      }
+    ]
+  },
+  subPackages: [
+    {
+      root: 'pages/my/_my',
+      name: '我的二级页面',
+      pages: [
+      ]
+    },
+  ]
 }
