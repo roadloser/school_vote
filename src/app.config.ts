@@ -2,11 +2,12 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2020-11-25 18:48:35
+ * @LastEditTime: 2020-11-27 22:02:42
  */
 export default {
   pages: [
-    'pages/index/index'
+    'pages/index/index',
+    'pages/my/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -39,6 +40,7 @@ export default {
       root: 'pages/my/_my',
       name: '我的二级页面',
       pages: [
+        'vote_list/index'
       ]
     },
   ]
