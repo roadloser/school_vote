@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Button, Text, Input } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
+import debounce from '@/util/debounce'
 
 import './index.less'
+import { CSSRemainHeight } from '@/util/system'
 
 type PageStateProps = {
   store: {
@@ -20,41 +22,74 @@ interface Index {
 }
 
 @inject('store')
-@observer
 class Index extends Component {
-  componentWillMount () { }
-
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
-  increment = () => {
-    const { counterStore } = this.props.store
-    counterStore.increment()
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue: '',
+      isShow: false,
+      isFocus: false
+    }
   }
 
-  decrement = () => {
-    const { counterStore } = this.props.store
-    counterStore.decrement()
+  componentDidShow () {
+    this.clearInput()
   }
 
-  incrementAsync = () => {
-    const { counterStore } = this.props.store
-    counterStore.incrementAsync()
+  changeInput: any = debounce(({detail:{value}}) => {
+    console.log(value)
+    this.setState({
+      inputValue: value,
+      isFocus: true
+    })
+  }, 1000)
+
+  clearInput = () => {
+    this.setState({
+      inputValue: '',
+      isShow: false,
+      isFocus: false
+    })
   }
 
-  render () {
-    const { counterStore: { counter } } = this.props.store
+  render() {
+    const { inputValue, isShow, isFocus } = this.state
     return (
-      <View className='index'>
-        <Button onClick={this.increment}>+</Button>
-        <Button onClick={this.decrement}>-</Button>
-        <Button onClick={this.incrementAsync}>Add Async</Button>
-        <Text>{counter}</Text>
+      <View className='wrap'>
+        { isShow && 
+          <View className='i-wrap'>
+            <View className='i-header'>
+              <Input
+                className='i-search'
+                placeholder='搜索活动id/活动名称'
+                onInput={ this.changeInput }
+                focus={ isFocus }
+              />
+              {isFocus && <Text
+                className='i-clear'
+                onClick={this.clearInput}
+              >取消</Text>}
+            </View>
+          </View>
+        }
+        {!isShow && 
+          <View
+            className='fake-wrap'
+            style={{height: CSSRemainHeight(0)}}
+          >
+            <View className='fake-logo flex'><Text>SchoolVote</Text></View>
+            <View
+              className='fake-search'
+              hoverClass='fake-search-hover'
+              onClick={() => {
+                this.setState({
+                  isShow: true,
+                  isFocus: true
+                })
+              }}
+            ><Text>搜索活动id/活动名称</Text></View>
+          </View>
+        }
       </View>
     )
   }
