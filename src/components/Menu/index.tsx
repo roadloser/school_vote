@@ -12,6 +12,7 @@ interface IProps {
   icon?: string
   bottom?: boolean
   onClick?: Function
+  children?: React.ReactNode
 }
 
 export const Menu = (props: IProps) => {
@@ -43,11 +44,11 @@ export const Menu = (props: IProps) => {
         <View>
           <View className='menu-title'><Text>{title}</Text></View>
           {Boolean(content) && <View className='menu-content'><Text>{content}</Text></View>}
+          {props.children}
         </View>
         <View className='menu-flex'>
           {Boolean(tips) && <Text className='menu-content'>{tips}</Text>}
           {Boolean(url) && <Image className='menu-icon' src={ icon } />}
-
         </View>
       </View>
     </View>

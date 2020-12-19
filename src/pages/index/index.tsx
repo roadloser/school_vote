@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { View, Button, Text, Input } from '@tarojs/components'
+import { View, Text, Input } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 import debounce from '@/util/debounce'
-
+import { ISearchResult, getSreachListAPI } from '@/api/index'
 import './index.less'
 import { CSSRemainHeight } from '@/util/system'
+import { Menu } from '@/components/Menu'
+import { timeFormat } from '@/util/format'
+import { routes } from '@/config/routes'
 
 type PageStateProps = {
   store: {
@@ -16,9 +19,14 @@ type PageStateProps = {
     }
   }
 }
-
 interface Index {
   props: PageStateProps;
+  state: {
+    inputValue: string,
+    isShow: boolean,
+    isFocus: boolean,
+    searchList: ISearchResult[]
+  }
 }
 
 @inject('store')
@@ -28,34 +36,46 @@ class Index extends Component {
     this.state = {
       inputValue: '',
       isShow: false,
-      isFocus: false
+      isFocus: false,
+      searchList: []
     }
   }
 
   componentDidShow () {
-    this.clearInput()
+    const {inputValue} = this.state
+    !inputValue && this.setState({ isShow: false })
   }
 
-  changeInput: any = debounce(({detail:{value}}) => {
-    console.log(value)
+  changeInput: () => void = debounce(async({detail:{value}}) => {
+    const { data } = await  await getSreachListAPI(value) || {}
+    const { searchList } = data || {}
     this.setState({
       inputValue: value,
-      isFocus: true
+      searchList: searchList
     })
-  }, 1000)
+  }, 500)
 
-  clearInput = () => {
+  clearInput = (deep = false) => {
+    if (deep) {
+      console.log('取消');
+      
+      this.setState({
+        inputValue: '',
+        isShow: false
+      })
+    }
     this.setState({
-      inputValue: '',
-      isShow: false,
       isFocus: false
     })
   }
 
   render() {
-    const { inputValue, isShow, isFocus } = this.state
+    const { inputValue, searchList, isShow, isFocus } = this.state
+    console.log('render');
+    
     return (
       <View className='wrap'>
+        {/* realPage */}
         { isShow && 
           <View className='i-wrap'>
             <View className='i-header'>
@@ -64,14 +84,29 @@ class Index extends Component {
                 placeholder='搜索活动id/活动名称'
                 onInput={ this.changeInput }
                 focus={ isFocus }
+                onBlur={() => this.clearInput()}
               />
-              {isFocus && <Text
+              {inputValue && <Text
                 className='i-clear'
-                onClick={this.clearInput}
+                onClick={() => this.clearInput(true)}
               >取消</Text>}
             </View>
+            {searchList.length > 0 &&
+              searchList.map((e,i) => 
+              <Menu
+                key={`searchList-${i}`}
+                title={e.act_name}
+                bottom={i >= searchList.length - 1}
+                content={`结束时间：${timeFormat(e.vote_time, 'yyyy-MM-dd hh:mm')}`}
+                tips={`${Date.now() < e.vote_time ? '进行中' : '已结束'}`}
+                url={`${routes.activity}?aid=${e.act_id}`}
+              >
+              </Menu>
+            )}
+
           </View>
         }
+        {/* fakePage */}
         {!isShow && 
           <View
             className='fake-wrap'

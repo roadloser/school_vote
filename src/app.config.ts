@@ -2,12 +2,22 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2020-12-18 19:45:38
+ * @LastEditTime: 2020-12-19 22:06:20
  */
 export default {
   pages: [
-    'pages/index/index',
-    'pages/my/index',
+    'pages/index/index',  // 首页（兼活动list）
+    'pages/my/index',  // 我的
+    'pages/activity/index',  // 活动item页
+  ],
+  subPackages: [
+    {
+      root: 'pages/my/_my',
+      name: '我的二级页面',
+      pages: [
+        'vote_list/index'
+      ]
+    },
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -36,13 +46,4 @@ export default {
       }
     ]
   },
-  subPackages: [
-    {
-      root: 'pages/my/_my',
-      name: '我的二级页面',
-      pages: [
-        'vote_list/index'
-      ]
-    },
-  ]
 }

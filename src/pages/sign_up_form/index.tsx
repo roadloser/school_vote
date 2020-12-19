@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { View, Input } from '@tarojs/components';
+import { View, Text } from '@tarojs/components';
 import './index.less';
 
 interface IState {}
 interface IProps {}
-export default class Search extends Component<IProps, IState> {
+export default class Index extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {}
@@ -13,7 +13,7 @@ export default class Search extends Component<IProps, IState> {
   render() {
     return (
       <View>
-         <Input type='text' placeholder='将会获取焦点' focus/>
+        <Text>123</Text>
       </View>
     )
   }
