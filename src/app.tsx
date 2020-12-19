@@ -10,7 +10,14 @@ const store = {
 }
 
 class App extends Component {
-  componentDidMount () {}
+  componentDidMount () {
+    // 支付宝阻止下拉刷新
+    if (process.env.TARO_ENV === 'alipay') {
+      my.setCanPullDown({
+        canPullDown: false
+      })
+    }
+  }
 
   componentDidShow () {}
 

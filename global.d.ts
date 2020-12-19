@@ -1,3 +1,9 @@
+/*
+ * @Author: roadloser
+ * @Date: 2020-11-25 15:23:19
+ * @LastEditors: roadloser
+ * @LastEditTime: 2020-12-17 16:20:41
+ */
 declare module "*.png";
 declare module "*.gif";
 declare module "*.jpg";
@@ -9,6 +15,7 @@ declare module "*.scss";
 declare module "*.sass";
 declare module "*.styl";
 
+declare const my: any
 declare namespace JSX {
     interface IntrinsicElements {
         'import': React.DetailedHTMLProps<React.EmbedHTMLAttributes<HTMLEmbedElement>, HTMLEmbedElement>
