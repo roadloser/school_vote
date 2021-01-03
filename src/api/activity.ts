@@ -2,12 +2,12 @@
  * @Author: roadloser
  * @Date: 2020-12-19 22:49:29
  * @LastEditors: roadloser
- * @LastEditTime: 2020-12-19 23:42:29
+ * @LastEditTime: 2020-12-31 15:58:48
  */
 export interface IParticipant {
-  participant_id: nstring,
+  participant_id: number | string,
   name: string,
-  poll: nstring
+  poll: number | string,
 }
 export const getActivityAPI = opt => {
   return {

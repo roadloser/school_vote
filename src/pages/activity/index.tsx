@@ -3,9 +3,10 @@ import { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components';
 import { getActivityAPI, IParticipant, voteAPI } from '@/api/activity';
 import './index.less';
-import { debounceFn, debounceForClick } from '@/util/debounce';
+import { debounceFn } from '@/util/debounce';
 import { CSSRemainHeight } from '@/util/system';
 import { routes } from '@/config/routes';
+import { getLang, clickVote } from './_util';
 
 interface IState {
   activityList: IParticipant[],  // 候选人
@@ -42,26 +43,13 @@ export default class Activity extends Component<IProps, IState> {
     }
   }
 
-  // 投票
-  voteIt = debounceForClick({
-    cb: async id => {
-      const {code, data} = await voteAPI(id)
-      if (code === 200) {
-        Taro.showToast({title: 'ok'})
-      }
-    },
-    waitFn: () => {
-      Taro.showToast({title: '过会儿再投'})
-    },
-    delay: 2500
-  })
 
   // 进入报名页
-  toSignupForm = debounceFn(() => {
+  toEntryForm = debounceFn(() => {
     const { signType } = this.state
     if (signType > 0) {
       Taro.navigateTo({
-        url: `${routes.signupForm}?sid=${this.sign_id}`
+        url: `${routes.entryForm}?sid=${this.sign_id}`
       })
     } 
   }, 1000)
@@ -80,13 +68,13 @@ export default class Activity extends Component<IProps, IState> {
               key={`${e.participant_id}-${i}`}
               className='act-card'
             >
-              <Text>姓名：{e.name}</Text>
-              <Text>票数：{e.poll}</Text>
+              <Text>{getLang().activity_name}：{e.name}</Text>
+              <Text>{getLang().activity_poll}：{e.poll}</Text>
               <View
                 className='act-card-vote'
-                onClick={() => this.voteIt(e.participant_id)}
+                onClick={() => clickVote(e.participant_id)}
               >
-                <Text>投票</Text>
+                <Text>{getLang().activity_vote}</Text>
               </View>
             </View>
           })}
@@ -95,9 +83,9 @@ export default class Activity extends Component<IProps, IState> {
         <View className='act-button'>
           <View
             className='act-card-vote'
-            onClick={() => this.toSignupForm()}
+            onClick={() => this.toEntryForm()}
           >
-            <Text>报名</Text>
+            <Text>{getLang().activity_sign_up}</Text>
           </View>
         </View>
       </View>

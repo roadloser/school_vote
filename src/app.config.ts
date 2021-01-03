@@ -2,13 +2,12 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2020-12-19 22:06:20
+ * @LastEditTime: 2020-12-31 14:10:27
  */
 export default {
   pages: [
     'pages/index/index',  // 首页（兼活动list）
     'pages/my/index',  // 我的
-    'pages/activity/index',  // 活动item页
   ],
   subPackages: [
     {
@@ -16,6 +15,15 @@ export default {
       name: '我的二级页面',
       pages: [
         'vote_list/index'
+      ]
+    },
+    {
+      root: 'pages/activity',
+      name: '投票列表页',
+      pages: [
+        'entry_form/index',  // 报名页
+        'vote_detail/index',  // 投票详情页
+        'index'  // 投票列表页
       ]
     },
   ],

@@ -8,6 +8,7 @@ import { CSSRemainHeight } from '@/util/system'
 import { Menu } from '@/components/Menu'
 import { timeFormat } from '@/util/format'
 import { routes } from '@/config/routes'
+import { getLang } from './_util'
 
 type PageStateProps = {
   store: {
@@ -57,8 +58,6 @@ class Index extends Component {
 
   clearInput = (deep = false) => {
     if (deep) {
-      console.log('取消');
-      
       this.setState({
         inputValue: '',
         isShow: false
@@ -71,7 +70,6 @@ class Index extends Component {
 
   render() {
     const { inputValue, searchList, isShow, isFocus } = this.state
-    console.log('render');
     
     return (
       <View className='wrap'>
@@ -81,7 +79,7 @@ class Index extends Component {
             <View className='i-header'>
               <Input
                 className='i-search'
-                placeholder='搜索活动id/活动名称'
+                placeholder={getLang('index').index_input_placeholder}  // 搜索活动id/活动名称
                 onInput={ this.changeInput }
                 focus={ isFocus }
                 onBlur={() => this.clearInput()}
@@ -89,7 +87,7 @@ class Index extends Component {
               {inputValue && <Text
                 className='i-clear'
                 onClick={() => this.clearInput(true)}
-              >取消</Text>}
+              >{getLang('index').index_cancel}</Text>}
             </View>
             {searchList.length > 0 &&
               searchList.map((e,i) => 
@@ -97,8 +95,9 @@ class Index extends Component {
                 key={`searchList-${i}`}
                 title={e.act_name}
                 bottom={i >= searchList.length - 1}
-                content={`结束时间：${timeFormat(e.vote_time, 'yyyy-MM-dd hh:mm')}`}
-                tips={`${Date.now() < e.vote_time ? '进行中' : '已结束'}`}
+                // 
+                content={`${getLang().index_end_time}：${timeFormat(e.vote_time, 'yyyy-MM-dd hh:mm')}`}
+                tips={`${Date.now() < e.vote_time ? getLang().index_button_type_doing : getLang().index_button_type_done}`}
                 url={`${routes.activity}?aid=${e.act_id}`}
               >
               </Menu>
@@ -112,7 +111,7 @@ class Index extends Component {
             className='fake-wrap'
             style={{height: CSSRemainHeight(0)}}
           >
-            <View className='fake-logo flex'><Text>SchoolVote</Text></View>
+            <View className='fake-logo flex'><Text>{getLang().logo}</Text></View>
             <View
               className='fake-search'
               hoverClass='fake-search-hover'
@@ -122,7 +121,7 @@ class Index extends Component {
                   isFocus: true
                 })
               }}
-            ><Text>搜索活动id/活动名称</Text></View>
+            ><Text>{getLang().input_placeholder}</Text></View>
           </View>
         }
       </View>
