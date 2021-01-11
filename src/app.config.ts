@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2020-12-31 14:10:27
+ * @LastEditTime: 2021-01-11 09:49:56
  */
 export default {
   pages: [
@@ -32,6 +32,7 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black',
+    backgroundColor: '#fff',
     allowsBounceVertical:"NO",  // alipay阻止下拉刷新
   },
   tabBar: {
