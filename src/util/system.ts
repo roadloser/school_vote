@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2020-12-03 17:47:32
  * @LastEditors: roadloser
- * @LastEditTime: 2020-12-06 19:43:57
+ * @LastEditTime: 2021-01-12 01:16:16
  */
 import Taro from '@tarojs/taro'
 
@@ -63,4 +63,11 @@ export const CSSRemainHeight = (exceptHeight: number, tabBar = true, containStat
   return `${ getSystemInfoSync().windowHeight - tabBarHeight - statusBar - exceptHeight }px`
 }
 
+export const setTitle = (title) => {
+  Taro.setNavigationBarTitle({ title })
+}
 
+/** 跳转 */
+export const navigate = (url: string) => Taro.navigateTo({ url })
+export const redirect = (url: string) => Taro.redirectTo({ url })
+export const navigateBack = () => Taro.navigateBack()

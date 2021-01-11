@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components';
-import { getActivityAPI, IParticipant, voteAPI } from '@/api/activity';
-import './index.less';
+import { getActivityAPI, IParticipant } from '@/api/activity';
 import { debounceFn } from '@/util/debounce';
-import { CSSRemainHeight } from '@/util/system';
+import { CSSRemainHeight, navigate } from '@/util/system';
 import { routes } from '@/config/routes';
 import { getLang, clickVote } from './_util';
+import transfer from '@/util/transfer';
+import './index.less';
 
 interface IState {
   activityList: IParticipant[],  // 候选人
@@ -48,10 +49,14 @@ export default class Activity extends Component<IProps, IState> {
   toEntryForm = debounceFn(() => {
     const { signType } = this.state
     if (signType > 0) {
-      Taro.navigateTo({
-        url: `${routes.entryForm}?sid=${this.sign_id}`
-      })
+      navigate(`${routes.entryForm}?sid=${this.sign_id}`)
     } 
+  }, 1000)
+
+  // 进入投票详情页
+  toVoteDetails = debounceFn((e: IParticipant) => {
+    transfer.params = e
+    navigate(routes.voteDetails)
   }, 1000)
 
   render() {
@@ -67,6 +72,7 @@ export default class Activity extends Component<IProps, IState> {
             return <View
               key={`${e.participant_id}-${i}`}
               className='act-card'
+              onClick={() => this.toVoteDetails(e)}
             >
               <Text>{getLang().activity_name}：{e.name}</Text>
               <Text>{getLang().activity_poll}：{e.poll}</Text>
