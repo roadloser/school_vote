@@ -41,7 +41,7 @@ export default function EntryForm (props: IProps) {
         </View>
       </View>
       <View className='entry-form-line' /> */}
-      <View className='entry-form-p flex'>
+      <View className='entry-form-submit flex'>
         <Text>提交报名</Text>
       </View>
     </View>

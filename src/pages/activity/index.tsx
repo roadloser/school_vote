@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getCurrentInstance } from '@tarojs/taro';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components';
 import { getActivityAPI, IParticipant, voteAPI } from '@/api/activity';
 import './index.less';
@@ -71,7 +71,7 @@ export default class Activity extends Component<IProps, IState> {
               <Text>{getLang().activity_name}：{e.name}</Text>
               <Text>{getLang().activity_poll}：{e.poll}</Text>
               <View
-                className='act-card-vote'
+                className='act-card-vote flex'
                 onClick={() => clickVote(e.participant_id)}
               >
                 <Text>{getLang().activity_vote}</Text>
@@ -82,7 +82,7 @@ export default class Activity extends Component<IProps, IState> {
         </ScrollView>
         <View className='act-button'>
           <View
-            className='act-card-vote'
+            className='act-card-vote flex'
             onClick={() => this.toEntryForm()}
           >
             <Text>{getLang().activity_sign_up}</Text>

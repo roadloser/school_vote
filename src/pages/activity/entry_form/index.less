@@ -1,0 +1,46 @@
+@import '../../../reset.less';
+textarea {
+  font-size: @fz-h3!important;
+}
+.flex-col {
+  flex-direction: column;
+}
+.entry-form {
+  background-color: #fff;
+  &-container {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 34px 0;
+  }
+
+  // 表单行
+  &-p {
+    // .flex();
+    padding: 40px 0;
+    font-size: @fz-h3;
+    &-text {
+      width: 176px;
+    }
+    &-input,
+    &-textarea {
+      flex: 1;
+      padding: 0;
+    }
+  }
+
+  &-line {
+    display: flex;
+    height: 2px;
+    background-color: #f0f2f6;
+  }
+
+  &-submit {
+    justify-content: center;
+    margin-top: 30px;
+    height: 100px;
+    background-color: #b2b;
+    color: #fff;
+    border-radius: 10px;
+    font-size: @fz-h3;
+  }
+}
