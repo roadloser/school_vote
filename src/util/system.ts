@@ -2,12 +2,13 @@
  * @Author: roadloser
  * @Date: 2020-12-03 17:47:32
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-12 01:16:16
+ * @LastEditTime: 2021-01-18 18:23:59
  */
 import Taro from '@tarojs/taro'
 
 export const isH5 = process.env.TARO_ENV === 'h5'
 export const isRn = process.env.TARO_ENV === 'rn'
+export const isWeapp = process.env.TARO_ENV === 'weapp'
 
 export function getSystemInfo(): Promise<Taro.getSystemInfo.Result | null> {
   return new Promise(resolve => {
