@@ -1,0 +1,31 @@
+{
+  "name": "koa2Demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "supervisor bin/www",
+    "dev": "./node_modules/.bin/nodemon bin/www",
+    "prd": "pm2 start bin/www",
+    "db-init": "node ./db-init",
+    "test": "yarn db-init && yarn start"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-convert": "^1.2.0",
+    "koa-json": "^2.0.2",
+    "koa-jwt": "^4.0.0",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "koa2-cors": "^2.0.6",
+    "mysql2": "^2.2.5",
+    "node-uuid": "^1.4.8",
+    "sequelize": "^6.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}

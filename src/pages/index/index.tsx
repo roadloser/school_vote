@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro';
 import { View, Text, Input } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 import debounce from '@/util/debounce'
 import { ISearchResult, getSreachListAPI } from '@/api/index'
 import './index.less'
-import { CSSRemainHeight } from '@/util/system'
+import { CSSRemainHeight, isWeapp } from '@/util/system'
 import { Menu } from '@/components/Menu'
 import { timeFormat } from '@/util/format'
 import { routes } from '@/config/routes'
@@ -26,11 +27,13 @@ interface Index {
     inputValue: string,
     isShow: boolean,
     isFocus: boolean,
+    mounted: boolean,
     searchList: ISearchResult[]
   }
 }
 
-@inject('store')
+@inject('user')
+@observer
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -38,8 +41,18 @@ class Index extends Component {
       inputValue: '',
       isShow: false,
       isFocus: false,
+      mounted: !isWeapp,
       searchList: []
     }
+  }
+
+  componentDidMount() {
+    // 首屏
+    isWeapp && Taro.nextTick(() => {
+      this.setState({
+        mounted: true
+      })
+    })
   }
 
   componentDidShow () {
@@ -69,12 +82,12 @@ class Index extends Component {
   }
 
   render() {
-    const { inputValue, searchList, isShow, isFocus } = this.state
+    const { inputValue, searchList, isShow, isFocus, mounted } = this.state
     
     return (
       <View className='wrap'>
         {/* realPage */}
-        { isShow && 
+        { mounted && isShow && 
           <View className='i-wrap'>
             <View className='i-header'>
               <Input

@@ -2,10 +2,12 @@
  * @Descripttion: 
  * @version: 
  * @Author: roadloser
- * @Date: 2020-12-31 13:56:25
+ * @Date: 2021-01-19 13:28:32
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-12 21:20:32
+ * @LastEditTime: 2021-01-19 22:20:15
  */
+import user from "./user"
+
 export default {
-  navigationBarTitleText: ''
+  user
 }
