@@ -32,7 +32,8 @@ interface Index {
   }
 }
 
-@inject('store')
+@inject('user')
+@observer
 class Index extends Component {
   constructor(props) {
     super(props);

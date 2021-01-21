@@ -8,15 +8,18 @@ import { routes } from '@/config/routes';
 import { getLang, clickVote } from './_util';
 import transfer from '@/util/transfer';
 import './index.less';
+import { inject, observer } from 'mobx-react';
 
 interface IState {
   activityList: IParticipant[],  // 候选人
   signType: number  // 0: 报名截止 1:报名 2: 编辑报名
 }
 interface IProps {}
+@inject('user')
+@observer
 export default class Activity extends Component<IProps, IState> {
   activity_id: nstring  // 活动id
-  sign_id: nstring  // 活动报名id
+  sign_id: number  // 活动报名id
   constructor(props) {
     super(props);
     this.state = {

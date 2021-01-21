@@ -3,12 +3,12 @@
  * @Author: roadloser
  * @Date: 2021-01-11 21:02:54
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-12 00:03:02
+ * @LastEditTime: 2021-01-19 20:39:36
  */
 
 import clone from "./clone"
 
-class Transfer {
+export class Transfer {
   private static instance: Transfer
   private _data: any = null
   get params () {
