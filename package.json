@@ -9,21 +9,21 @@
     "css": "less"
   },
   "scripts": {
+    "build:weapp-win": "taro build --type weapp",
+    "build:alipay-win": "taro build --type alipay",
+    "build:h5-win": "taro build --type h5",
+    "dev:weapp-win": "set NODE_ENV=production && npm run build:weapp-win -- --watch",
+    "dev:alipay-win": "set NODE_ENV=production && npm run build:alipay-win -- --watch",
+    "dev:h5-win": "set NODE_ENV=production && npm run build:h5-win -- --watch",
+
     "build:weapp": "NODE_ENV=production taro build --type weapp",
-    "build:swan": "NODE_ENV=production taro build --type swan",
     "build:alipay": "NODE_ENV=production taro build --type alipay",
-    "build:tt": "NODE_ENV=production taro build --type tt",
     "build:h5": "NODE_ENV=production taro build --type h5",
     "build:rn": "NODE_ENV=production taro build --type rn",
-    "build:qq": "NODE_ENV=production taro build --type qq",
-    "build:quickapp": "NODE_ENV=production taro build --type quickapp",
     "dev:weapp": "npm run build:weapp -- --watch",
-    "dev:swan": "npm run build:swan -- --watch",
     "dev:alipay": "npm run build:alipay -- --watch",
-    "dev:tt": "npm run build:tt -- --watch",
     "dev:h5": "npm run build:h5 -- --watch",
     "dev:rn": "npm run build:rn -- --watch",
-    "dev:qq": "npm run build:qq -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch"
   },
   "browserslist": [
