@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-01-25 09:47:32
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-26 18:53:17
+ * @LastEditTime: 2021-02-20 22:31:23
  */
 
 const {
@@ -26,6 +26,10 @@ router.get('/ccc', async ctx => {
   // await findUser
 })
 
+router.get('/init', async(ctx) => {
+  require('../db-init')
+  ctx.body = sendRes('db-init')
+})
 router.post('/create', async (ctx, next) => {
   const { user_id = null, weapp_id = null, alipay_id = null } = ctx.request.body
   let ids = {}
@@ -111,14 +115,32 @@ router.post('/setToken', async (ctx, next) => {
   ctx.body = { token }
 })
 
+// 只有authorization才会try，null直接报错，走另外的逻辑
 router.get('/getToken', needToken, async (ctx, next) => {
-  const { token } = ctx.header
+  const { authorization } = ctx.header
   try {
-    const res = await getToken(token)
+    const res = await getToken(authorization)
     ctx.body = res
   } catch (error) {
+    console.log('res', error);
     ctx.body = error  // code 401
   }
 })
 
+router.get('/token', async (ctx, next) => {
+  const { authorization } = ctx.header
+  try {
+    const res = await getToken(authorization)
+    ctx.body = res
+  } catch (error) {
+    console.log('res', error);
+    ctx.body = error  // code 401
+  }
+})
+
+router.get('/actTest', async(ctx, next) => {
+  // const param = ctx.request.body
+  const param = ctx.query
+  console.log(param);
+})
 module.exports = router

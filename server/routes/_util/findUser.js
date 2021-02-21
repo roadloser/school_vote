@@ -3,7 +3,7 @@
  * @Author: roadloser
  * @Date: 2021-01-25 13:56:13
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-26 18:22:22
+ * @LastEditTime: 2021-02-20 22:45:12
  */
 const Platform = require('../../models/Platform')
 const { getToken } = require('./token')
@@ -11,19 +11,29 @@ const { isNullObj } = require('./util')
 
 /**
  * @return {
- *  type, 【0/null】ok |【1】 有id没user_id | 【2】id null | 【3】没token | 【4】 sql err | 【5】 token与传入不一样
+ *  type, 【0/null】ok |【1】 有id但无user_id | 【2】id/user_id 都无 | 【3】没token/token与传入不一样 | 【4】 sql err 
  *  user_id?,
  *  err?
  * }
  */
-module.exports = async (params = null) => {
+module.exports = async (params = null, isStrict = false) => {
   try {
-    const ids = params || await getToken(global.token)
-    const { user_id = '', weapp_id = '', alipay_id = '' } = ids
-    if (user_id) {
-      return { user_id }
-    }
+    const ids = typeof params === 'string' ? getToken(params) : params
+    console.log('typeof params', typeof params);
+    const { user_id = '', weapp_id = '', alipay_id = '', token_id = '' } = ids
+    if (token_id) return { id: token_id }
     try {
+      if (user_id) {
+        if (isStrict) {
+          const result = await Platform.findAll({
+            where: { user_id: user_id },
+            attributes: ['user_id', 'id']
+          })
+          const { user_id: uid, id: u_id } = (result && result[0]) || {}
+          return uid === user_id ? { id: u_id, user_id } : { type: 2 }
+        }
+        return { user_id }
+      }
       if (weapp_id) {
         const weappRes = await Platform.findAll({
           where: { weapp_id: weapp_id },
@@ -60,6 +70,7 @@ module.exports = async (params = null) => {
       return { type: 4, err }
     }
   } catch (err) {
+    console.log('findUser---', err)
     return { type: 3, err }
   }
 }
