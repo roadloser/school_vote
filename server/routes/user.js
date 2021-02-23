@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-01-20 10:27:10
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-19 23:25:49
+ * @LastEditTime: 2021-02-23 12:51:39
  */
 const router = require('koa-router')()
 const { User, Platform, Test } = require('../model')
@@ -24,7 +24,7 @@ router.post('/create', async (ctx, next) => {
   const params = ctx.request.body
   const { type } = await findUser(params, true)
   if (type !== 2) {
-    ctx.body = sendRes('已存在用户名', httpStatus.user_exist)
+    ctx.body = sendRes('已存在用户名', httpStatus.common_exist)
     return await next()
   }
 

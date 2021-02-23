@@ -4,7 +4,7 @@
  * @Author: roadloser
  * @Date: 2021-01-20 10:27:10
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-19 21:25:21
+ * @LastEditTime: 2021-02-23 12:52:11
  */
 const router = require('koa-router')()
 const user = require('./user')
@@ -22,7 +22,7 @@ router.get('/login', async (ctx, next) => {
   const params = ctx.query
   const { id: ids, type } = await findUser(params, true)
   if (type === 2) {
-    ctx.body = sendRes('用户名不存在', httpStatus.user_no_exist)
+    ctx.body = sendRes('用户名不存在', httpStatus.common_no_exist)
     return await next()
   }
 
