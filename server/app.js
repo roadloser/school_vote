@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-01-20 10:27:10
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-26 18:58:48
+ * @LastEditTime: 2021-02-26 20:22:33
  */
 const Koa = require('koa')
 const app = new Koa()
@@ -20,7 +20,8 @@ app.use(cors({
       console.log('请求了啊')
       return "*"; // 允许来自所有域名请求
     }
-    return 'http://localhost:3000'; // 这样就能只允许 http://localhost:3000 这个域名的请求了
+    return '*'
+    // return 'http://localhost:3000'; // 这样就能只允许 http://localhost:3000 这个域名的请求了
   },
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
   maxAge: 5,

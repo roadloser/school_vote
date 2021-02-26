@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-11 09:49:56
+ * @LastEditTime: 2021-02-25 19:10:48
  */
 export default {
   pages: [
@@ -15,6 +15,13 @@ export default {
       name: '我的二级页面',
       pages: [
         'vote_list/index'
+      ]
+    },
+    {
+      root: 'pages/login',
+      name: '登录页',
+      pages: [
+        'index'
       ]
     },
     {
