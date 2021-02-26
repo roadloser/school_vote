@@ -27,7 +27,7 @@ interface Index {
     inputValue: string,
     isShow: boolean,
     isFocus: boolean,
-    mounted: boolean,
+    mounted: boolean
     searchList: ISearchResult[]
   }
 }
@@ -35,6 +35,8 @@ interface Index {
 @inject('user')
 @observer
 class Index extends Component {
+  page:number = 1
+  limit:number = 10
   constructor(props) {
     super(props);
     this.state = {
@@ -61,11 +63,15 @@ class Index extends Component {
   }
 
   changeInput: () => void = debounce(async({detail:{value}}) => {
-    const { data } = await  await getSreachListAPI(value) || {}
-    const { searchList } = data || {}
+    const { page, limit } = this
+    const { data } = await getSreachListAPI({
+      act_query: value,
+      page,
+      limit
+    }) || {}
     this.setState({
       inputValue: value,
-      searchList: searchList
+      searchList: data
     })
   }, 500)
 
@@ -109,9 +115,9 @@ class Index extends Component {
                 title={e.act_name}
                 bottom={i >= searchList.length - 1}
                 // 
-                content={`${getLang().index_end_time}：${timeFormat(e.vote_time, 'yyyy-MM-dd hh:mm')}`}
-                tips={`${Date.now() < e.vote_time ? getLang().index_button_type_doing : getLang().index_button_type_done}`}
-                url={`${routes.activity}?aid=${e.act_id}`}
+                content={`${getLang().index_end_time}：${timeFormat(e.act_end, 'yyyy-MM-dd hh:mm')}`}
+                tips={`${Date.now() < e.act_end ? getLang().index_button_type_doing : getLang().index_button_type_done}`}
+                url={`${routes.activity}?aid=${e.id}`}
               >
               </Menu>
             )}

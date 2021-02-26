@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-02-19 11:16:49
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-24 00:40:43
+ * @LastEditTime: 2021-02-27 01:02:36
  */
 const router = require('koa-router')()
 const {
@@ -11,6 +11,7 @@ const {
 } = require('../db')
 const {
   Activity,
+  User,
   Permission,
   Participant,
   Vote
@@ -39,6 +40,14 @@ const getActivity = async (act_id, needCreatedTime = false) => {
   return actRes ? actRes.dataValues : {}
 }
 
+// 获取user信息
+const getUser = async (ids, attributes = ['name', 'gender', 'user_info']) => {
+  const userRes = await User.findOne({
+    where: { ids },
+    attributes
+  })
+  return userRes ? userRes.dataValues : {}
+}
 /**
  * @description: 活动列表
  */
@@ -90,19 +99,22 @@ router.get('/', async (ctx, next) => {
   })
   // 聚合候选人的票数
   let participants = []
-  await parList.map(async (_par) => {
-    const par = (_par && _par.dataValues) || {}
-    const vote_count = await Vote.count({
+  for (let i = 0; i < parList.length; i++) {
+    const par = (parList[i] && parList[i].dataValues) || {};
+    const user = await getUser(par.player_id)
+    const poll = await Vote.count({
       where: {
         player_id: par.player_id,
         act_id
       }
     })
     participants.push({
+      ...user,
       ...par,
-      vote_count
+      poll
     })
-  })
+  }
+  console.log('participants\n', participants);
   // 获取活动信息
   const actRes = await getActivity(act_id, 1)
   if (isNullObj(actRes)) {

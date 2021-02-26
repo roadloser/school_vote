@@ -20,6 +20,8 @@ interface IProps {}
 export default class Activity extends Component<IProps, IState> {
   activity_id: nstring  // 活动id
   sign_id: number  // 活动报名id
+  page:number = 1
+  limit = 10
   constructor(props) {
     super(props);
     this.state = {
@@ -36,12 +38,17 @@ export default class Activity extends Component<IProps, IState> {
 
   // 获取活动信息
   getActivity = async() => {
-    const { code, data } = await getActivityAPI(this.activity_id) || {}
+    const { page, limit } = this
+    const { code, data } = await getActivityAPI({
+      act_id: this.activity_id,
+      page,
+      limit
+    }) || {}
     if(code === 200) {
-      const { actList, signType, sign_id } = data
+      const { participants, signType, sign_id } = data
       sign_id && (this.sign_id = sign_id);
       this.setState({
-        activityList: actList,
+        activityList: participants,
         signType: signType
       })
     }
@@ -71,9 +78,9 @@ export default class Activity extends Component<IProps, IState> {
           scrollY
           style={{height: CSSRemainHeight(0, false)}}
         >
-          {activityList.length > 0 && [...activityList,...activityList,...activityList].map((e, i) => {
+          {activityList.length > 0 && activityList.map((e, i) => {
             return <View
-              key={`${e.participant_id}-${i}`}
+              key={`${e.player_id}-${i}`}
               className='act-card'
               onClick={() => this.toVoteDetails(e)}
             >
@@ -81,7 +88,15 @@ export default class Activity extends Component<IProps, IState> {
               <Text>{getLang().activity_poll}：{e.poll}</Text>
               <View
                 className='act-card-vote flex'
-                onClick={() => clickVote(e.participant_id)}
+                onClick = {
+                  ev => {
+                    ev.stopPropagation()
+                    clickVote({
+                      player_id: e.player_id,
+                      act_id: this.activity_id
+                    })
+                  }
+                }
               >
                 <Text>{getLang().activity_vote}</Text>
               </View>

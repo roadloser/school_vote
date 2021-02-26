@@ -10,7 +10,7 @@ interface IParams extends IParticipant {}
 export default function VoteDetail (props: IProps) {
   const [detailMsg, setDetailMsg] = useState<IParams>()
   const {
-    participant_id = '***',
+    player_id = '***',
     name = '***',
     poll = 0
   } = detailMsg || {}
@@ -28,7 +28,7 @@ export default function VoteDetail (props: IProps) {
     const params = _params || {}
     // 缓存路线
     if(params.name) {
-      console.log('123');
+      console.log('123', params);
       
       const { name = '' } = params as IParams || {}
       setTitle(name)
@@ -45,7 +45,7 @@ export default function VoteDetail (props: IProps) {
   return <View className='flex'>
     {/* 参赛者信息 */}
     <View className='vote-detail-info'>
-      <Text className='vote-detail-p-side'>{participant_id}号</Text>
+      <Text className='vote-detail-p-side'>id：{player_id}</Text>
       <View className='vote-detail-p-center' />
       <Text className='vote-detail-p-side'>{name}</Text>
     </View>
@@ -64,6 +64,6 @@ export default function VoteDetail (props: IProps) {
         <View className='vote-detail-swiper-item'></View>
       </SwiperItem>
     </Swiper>
-    <LoginModal/>
+    {/* <LoginModal/> */}
   </View>
 }
