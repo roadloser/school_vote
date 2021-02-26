@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2020-12-03 17:47:32
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-18 18:23:59
+ * @LastEditTime: 2021-02-26 21:44:12
  */
 import Taro from '@tarojs/taro'
 
@@ -72,3 +72,36 @@ export const setTitle = (title) => {
 export const navigate = (url: string) => Taro.navigateTo({ url })
 export const redirect = (url: string) => Taro.redirectTo({ url })
 export const navigateBack = () => Taro.navigateBack()
+
+
+/**
+ * @description: showModal封装
+ * @param {*} opt
+ * @return {*}
+ */
+export const showModal = (opt: Taro.showModal.Option) => {
+  if (typeof opt === 'string') {
+    return isH5 ? alert(opt) : Taro.showModal({ content: opt, showCancel: false })
+  }
+  if (isH5) {
+    alert(opt.content)
+    // @ts-ignore
+    return opt.success && opt.success({ confirm: true })
+  }
+  return Taro.showModal({
+    ...opt,
+    showCancel: opt.showCancel || false
+  })
+}
+
+/**
+ * @description: 判断参数字段是否有值
+ * @param {*} enptyParams
+ * @return {*}
+ */
+export const enptyParams = params => {
+  for (const key in params) {
+    if (!params[key]) return key
+  }
+  return ''
+}

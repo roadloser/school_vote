@@ -1,0 +1,51 @@
+@import '../../reset.less';
+.login {
+  display: flex;
+  flex-direction: column;
+  padding: 300px 34px 0;
+
+  &-title {
+    flex: 1;
+    text-align: center;
+    font-size: @fz-h1;
+  }
+  // 表单行
+  &-p {
+    // .flex();
+    padding: 40px 0;
+    font-size: @fz-h3;
+    &-text {
+      width: 176px;
+    }
+    &-input,
+    &-textarea {
+      flex: 1;
+      padding: 0;
+    }
+  }
+
+  &-radioGroup {
+    flex-direction: row;
+  }
+
+  &-label {
+    flex-direction: row;
+    margin-right: 20px;
+  }
+
+  &-line {
+    display: flex;
+    height: 2px;
+    background-color: #f0f2f6;
+  }
+
+  &-submit {
+    justify-content: center;
+    margin-top: 60px;
+    height: 100px;
+    background-color: #2b2;
+    color: #fff;
+    border-radius: 10px;
+    font-size: @fz-h3;
+  }
+}
