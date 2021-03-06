@@ -6,7 +6,7 @@ import { debounceFn } from '@/util/debounce';
 import { enptyParams, isH5, isWeapp, showModal } from '@/util/system';
 import { loginAPI } from '@/api/login';
 import user from '@/store/user';
-import { navigateBack } from '@tarojs/taro';
+import { navigateBack, setStorageSync } from '@tarojs/taro';
 const getLang = (page: langPage = 'index') => lang.getLang(page)
 
 interface IProps {}
@@ -64,7 +64,9 @@ export default function Login(props: IProps) {
     await showModal(msg)
     if (code === 200) {
       const { token, user_info } = data
+      setStorageSync('token', token)
       user.setToken(token)
+      user.setLogin(true)
       user.setUserInfo(user_info)
       navigateBack()
     }

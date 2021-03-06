@@ -4,15 +4,16 @@
  * @Author: roadloser
  * @Date: 2021-01-19 11:16:58
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-26 21:52:52
+ * @LastEditTime: 2021-03-07 00:08:08
  */
 import { getUserInfo } from '@/api/api_user';
+import { getStorageSync } from '@tarojs/taro';
 import { action, observable } from 'mobx'
 
 class User {
   @observable userInfo = {}
   @observable isLogin = false
-  @observable token = ''
+  @observable token = getStorageSync('token') || ''
   @action setToken (newToken) {
     this.token = newToken
   }

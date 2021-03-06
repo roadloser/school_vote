@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-25 19:10:48
+ * @LastEditTime: 2021-03-06 19:18:13
  */
 export default {
   pages: [
@@ -26,11 +26,12 @@ export default {
     },
     {
       root: 'pages/activity',
-      name: '投票列表页',
+      name: '活动页',
       pages: [
+        'create/index',  // 活动创建页
+        'index',  // 活动页
         'entry_form/index',  // 报名页
-        'vote_detail/index',  // 投票详情页
-        'index'  // 投票列表页
+        'vote_detail/index'  // 投票详情页
       ]
     },
   ],

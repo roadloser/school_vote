@@ -3,7 +3,7 @@
  * @Description: 封装ajax
  * @Date: 2021-02-26 17:54:00
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-26 22:03:01
+ * @LastEditTime: 2021-03-07 00:56:27
  */
 import user from '@/store/user';
 import Taro from '@tarojs/taro';
@@ -28,7 +28,7 @@ function ajaxH5(opt) {
       xmlHttp.open(opt.method, opt.url)
     }
     else if (opt.method.toUpperCase() === 'GET') {
-      let params = [];
+      let params: string[] = [];
       for (const key in opt.data) {
         params.push(key + '=' + opt.data[key]);
       }
@@ -39,7 +39,9 @@ function ajaxH5(opt) {
     for (const headerKey in opt.header) {
       xmlHttp.setRequestHeader(headerKey, opt.header[headerKey]);
     }
-    xmlHttp.send(opt.method.toUpperCase() === 'POST' ? opt.data : null);
+    xmlHttp.send(opt.method.toUpperCase() === 'POST' ? (
+        opt.header['Content-Type'].indexOf('application/json') > -1 ? JSON.stringify(opt.data) : opt.data
+      ) : null);
     xmlHttp.onreadystatechange = function () {
       // 响应成功的函数
       if (xmlHttp.readyState === 4) {
@@ -81,6 +83,7 @@ async function ajaxFn(opt) {
   obj.dataType = opt.dataType || 'json'
   obj.mode = 'cors'
   obj.url = url.startsWith('/api') ? url.replace('/api', `${host}:${port}`) : url
+  // obj.header["Content-Type"] = header["Content-Type"] || `application/${opt.method === 'GET' ? 'json' : 'x-www-form-urlencoded'}`
   obj.header["Content-Type"] = header["Content-Type"] || "application/json"
   if (user.token) {
     obj.header["Authorization"] = user.token

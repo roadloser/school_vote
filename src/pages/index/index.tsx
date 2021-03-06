@@ -63,6 +63,7 @@ class Index extends Component {
   }
 
   changeInput: () => void = debounce(async({detail:{value}}) => {
+    if (!value) return
     const { page, limit } = this
     const { data } = await getSreachListAPI({
       act_query: value,

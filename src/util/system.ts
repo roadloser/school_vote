@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2020-12-03 17:47:32
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-26 21:44:12
+ * @LastEditTime: 2021-03-06 22:50:35
  */
 import Taro from '@tarojs/taro'
 
@@ -79,7 +79,7 @@ export const navigateBack = () => Taro.navigateBack()
  * @param {*} opt
  * @return {*}
  */
-export const showModal = (opt: Taro.showModal.Option) => {
+export const showModal = (opt: Taro.showModal.Option | string) => {
   if (typeof opt === 'string') {
     return isH5 ? alert(opt) : Taro.showModal({ content: opt, showCancel: false })
   }

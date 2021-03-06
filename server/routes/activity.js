@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-02-19 11:16:49
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-06 02:28:23
+ * @LastEditTime: 2021-03-07 00:32:18
  */
 const router = require('koa-router')()
 const {
@@ -136,6 +136,7 @@ router.post('/create', async (ctx, next) => {
   const {
     authorization
   } = ctx.header
+  console.log('ctx.request.body\n\n\n\n', ctx.request.body);
   const {
     id,
     type
@@ -165,7 +166,11 @@ router.post('/create', async (ctx, next) => {
     act_end = date_default,
     sign_end = date_default,
     participants = [],
-    act_extends = {}
+    act_extends = {
+      vote_limit: 0,
+      limit_times: 0,
+      vote_myself: true
+    }
   } = ctx.request.body
   if (act_end < sign_end) {
     ctx.body = sendRes('报名时间不能晚于活动截止时间', httpStatus.validation_failed)

@@ -7,6 +7,7 @@ import './index.less';
 interface IProps {
   title: string
   content?: string
+  adaptiveWidth?: boolean  // 自适应title宽度
   tips?: string
   url?: string
   icon?: string
@@ -18,6 +19,7 @@ interface IProps {
 export const Menu = (props: IProps) => {
   const {
     title = '',
+    adaptiveWidth = false,
     content = '',
     tips = '',
     url = '',
@@ -41,10 +43,13 @@ export const Menu = (props: IProps) => {
       onClick={ navigateTo }
     >
       <View className='menu-wrap'>
-        <View>
-          <View className='menu-title'><Text>{title}</Text></View>
+        <View className=''>
+          <View className='menu-flex'>
+            {adaptiveWidth ? <Text className='menu-title'>{title}</Text> : <Text
+              className='menu-title menu-title-width'>{title}</Text>}
+            {props.children}
+          </View>
           {Boolean(content) && <View className='menu-content'><Text>{content}</Text></View>}
-          {props.children}
         </View>
         <View className='menu-flex'>
           {Boolean(tips) && <Text className='menu-content'>{tips}</Text>}

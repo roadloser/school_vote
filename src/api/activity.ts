@@ -1,9 +1,9 @@
-import { ajaxGet } from './../util/_http';
+import { ajaxGet, ajaxPost } from './../util/_http';
 /*
  * @Author: roadloser
  * @Date: 2020-12-19 22:49:29
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-27 01:34:09
+ * @LastEditTime: 2021-03-06 22:54:49
  */
 export interface IParticipant {
   name: string // 候选人姓名
@@ -26,6 +26,10 @@ export interface IActivity {
   id: string  // 活动id
   createdAt: number  // 创建时间
   participants: IParticipant[]  // 候选人们的信息
+}
+
+export const createActivityAPI = opt => {
+  return ajaxPost('/api/activity/create', opt)
 }
 
 export const getActivityAPI = opt => {
