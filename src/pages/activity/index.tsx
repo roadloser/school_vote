@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getCurrentInstance } from '@tarojs/taro';
-import { View, Text, ScrollView } from '@tarojs/components';
+import { View, Text, ScrollView, Input } from '@tarojs/components';
 import { getActivityAPI, IParticipant } from '@/api/activity';
 import { debounceFn } from '@/util/debounce';
 import { CSSRemainHeight, navigate } from '@/util/system';
@@ -11,6 +11,8 @@ import './index.less';
 import { inject, observer } from 'mobx-react';
 
 interface IState {
+  act_name: string
+  act_info: string
   activityList: IParticipant[],  // 候选人
   signType: number  // 0: 报名截止 1:报名 2: 编辑报名
 }
@@ -25,6 +27,8 @@ export default class Activity extends Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
+      act_name: '***',
+      act_info: '***',
       activityList: [],
       signType: 0
     }
@@ -45,21 +49,26 @@ export default class Activity extends Component<IProps, IState> {
       limit
     }) || {}
     if(code === 200) {
-      const { participants, signType, sign_id } = data
-      sign_id && (this.sign_id = sign_id);
+      const {
+        act_name,
+        act_info,
+        participants = [],
+        sign_end
+      } = data
       this.setState({
+        act_name,
+        act_info,
         activityList: participants,
-        signType: signType
+        signType: Number(Date.now() < sign_end)
       })
     }
   }
-
 
   // 进入报名页
   toEntryForm = debounceFn(() => {
     const { signType } = this.state
     if (signType > 0) {
-      navigate(`${routes.entryForm}?sid=${this.sign_id}`)
+      navigate(`${routes.entryForm}?aid=${this.activity_id}`)
     } 
   }, 1000)
 
@@ -70,10 +79,22 @@ export default class Activity extends Component<IProps, IState> {
   }, 1000)
 
   render() {
-    const { activityList } = this.state
+    const {
+      activityList,
+      act_info,
+      act_name,
+      signType
+    } = this.state
     return (
       <View className='activity'>
-        <ScrollView
+        <View className='act-header'>
+          <Text className='act-header-title act-header-mt'>{act_name}</Text>
+          <Text className='act-header-info act-header-mt'>{act_info}</Text>
+          {/* <View className='act-header-button' onClick={() => this.toEntryForm()}>{getLang().activity_sign_up}</View> */}
+          <Input className='act-header-input act-header-mt' placeholder={'搜索候选人'} />
+        </View>
+        <View className='act-gap' />
+        {activityList.length > 0 ? <ScrollView
           className='act-wrap'
           scrollY
           style={{height: CSSRemainHeight(0, false)}}
@@ -103,14 +124,22 @@ export default class Activity extends Component<IProps, IState> {
             </View>
           })}
           <View className='act-button-fake' />
-        </ScrollView>
+        </ScrollView> : <View
+          style={{height: CSSRemainHeight(225, false)}}
+          className='act-default'
+        >
+          <Text className='act-default-text'>暂无选手，快去报名吧~</Text>
+        </View>}
+        
         <View className='act-button'>
-          <View
+          {signType? <View
             className='act-card-vote flex'
             onClick={() => this.toEntryForm()}
           >
-            <Text>{getLang().activity_sign_up}</Text>
-          </View>
+            <Text className='act-button-text'>{getLang().activity_sign_up}</Text>
+          </View> : <View className='act-card-vote flex act-button-gray'>
+            <Text className='act-button-text'>{'报名截止'}</Text>
+          </View>}
         </View>
       </View>
     )

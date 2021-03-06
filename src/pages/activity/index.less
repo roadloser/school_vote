@@ -6,8 +6,46 @@
   position: relative;
 }
 
-.act-search {
+.act-gap {
+  height: 30px;
+  background-color: #f6f6f6;
+}
 
+.act-header {
+  .flex();
+  flex-direction: column;
+  height: 420px;
+  &-mt {
+    margin-top: 20px;
+  }
+  &-title {
+    font-size: @fz-h1;
+  }
+  &-input {
+    color: #808080;
+    text-align: center;
+    font-size: @fz-h2;
+    border-bottom: 2px solid #808080;
+  }
+  &-info {
+    width: 90%;
+    text-indent: 2em;
+    height: 180px;
+    padding: 10px;
+    border: 2px solid #808080;
+    border-radius: 20px;
+    font-size: @fz-text;
+  }
+}
+
+.act-default {
+  .flex();
+  justify-content: center;
+
+  &-text {
+    color: #808080;
+    font-size: @fz-h3;
+  }
 }
 
 .act-card {
@@ -36,5 +74,11 @@
 
   &-fake {
     height: 200px;
+  }
+  &-gray {
+    background-color: #808080;
+  }
+  &-text {
+    font-size: @fz-h2;
   }
 }
