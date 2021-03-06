@@ -5,7 +5,7 @@
  * @Author: roadloser
  * @Date: 2020-12-31 14:26:21
  * @LastEditors: roadloser
- * @LastEditTime: 2021-01-03 21:05:54
+ * @LastEditTime: 2021-03-06 17:58:57
  */
 
 import { ILangObj } from "./_i"
@@ -17,7 +17,7 @@ const langPackage: ILangObj = {
     bar_index: '首页',
     bar_my: '我的',
     loading: '加载中',
-    logo: 'SchoolVote',
+    logo: 'SVGO',
     
     // 网络状态
     404: '找不到网页'

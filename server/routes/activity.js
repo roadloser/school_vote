@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-02-19 11:16:49
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-27 01:02:36
+ * @LastEditTime: 2021-03-06 02:28:23
  */
 const router = require('koa-router')()
 const {
@@ -160,6 +160,7 @@ router.post('/create', async (ctx, next) => {
   const date_default = 1000 * 60 * 60 * 24 + now
   const {
     act_name,
+    act_info,
     allowShow,
     act_end = date_default,
     sign_end = date_default,
@@ -181,6 +182,7 @@ router.post('/create', async (ctx, next) => {
   } = await Activity.create({
     create_user: id,
     act_name,
+    act_info,
     allowShow,
     act_end,
     sign_end,

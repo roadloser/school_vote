@@ -4,7 +4,7 @@
  * @Author: roadloser
  * @Date: 2021-01-20 10:27:10
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-23 12:52:11
+ * @LastEditTime: 2021-03-06 13:10:31
  */
 const router = require('koa-router')()
 const user = require('./user')
@@ -20,7 +20,7 @@ const { User } = require('../model')
 // login
 router.get('/login', async (ctx, next) => {
   const params = ctx.query
-  const { id: ids, type } = await findUser(params, true)
+  const { id: ids, user_id, type } = await findUser(params, true)
   if (type === 2) {
     ctx.body = sendRes('用户名不存在', httpStatus.common_no_exist)
     return await next()
@@ -43,12 +43,13 @@ router.get('/login', async (ctx, next) => {
     return await next()
   }
   // 设置token
-  const token = setToken({ token_id: ids })
+  const token = setToken({ token_id: ids, user_id })
   ctx.body = sendRes({
     token,
+    id: ids,
     user_info: {
       ...user[0].user_info,
-      name: user[0].name,
+      name: user[0].username,
       gender: user[0].gender
     },
     msg: '登录成功'

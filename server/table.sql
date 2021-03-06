@@ -35,3 +35,5 @@ select * from platform;
 -- 改字符
 -- alter database 数据库名 character set utf8mb4;
 
+-- 查表属性
+-- select column_name,column_type  from information_schema.COLUMNS where table_name='user';

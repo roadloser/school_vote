@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-01-25 09:47:32
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-20 22:31:23
+ * @LastEditTime: 2021-03-06 03:09:54
  */
 
 const {
@@ -14,7 +14,7 @@ const { isNullObj } = require('./_util/util')
 const router = require('koa-router')()
 const findUser = require('./_util/findUser')
 const sendRes = require('./_util/sendRes')
-const { Platform } = require('../model')
+const { Platform, User, Acticity, Permission } = require('../model')
 router.prefix('/test')
 // test.创建用户
 router.get('/ccc', async ctx => {
@@ -28,7 +28,49 @@ router.get('/ccc', async ctx => {
 
 router.get('/init', async(ctx) => {
   require('../db-init')
-  ctx.body = sendRes('db-init')
+  const u1 = {
+    id: '2017210575',
+    username: '王鸿康',
+    pwd: 'whk123456789',
+    gender: true,
+    user_info: {
+      imageUrl: 'https://c-ssl.duitang.com/uploads/item/202007/27/20200727215408_sroig.thumb.400_0.jpg',
+    }
+  }
+  const u2 = {
+    id: '2017210444',
+    username: '小红',
+    pwd: 'www',
+    gender: false,
+    user_info: {
+      imageUrl: 'https://c-ssl.duitang.com/uploads/item/202007/27/20200727215408_sroig.thumb.400_0.jpg',
+    }
+  }
+  const u3 = {
+    ...u2,
+    id: '2017211444',
+    username: '小六',
+  }
+  console.log('\n\n\nu3', u3);
+  // 绑定平台
+  const [p1] = await Platform.findOrCreate({ where: { user_id: u1.id } })
+  const [p2] = await Platform.findOrCreate({ where: { user_id: u2.id } })
+  const [p3] = await Platform.findOrCreate({ where: { user_id: u3.id } })
+  // 注册用户信息
+  await User.findOrCreate({ where: { ids: p1.id, ...u1 } });
+  await User.findOrCreate({ where: { ids: p2.id, ...u2 } });
+  await User.findOrCreate({ where: { ids: p3.id, ...u3 } });
+  // u1有权限
+  await Permission.findOrCreate({
+    where: { permission_id: p1.id },
+    defaults: { level: 2 }
+  });
+  // u2权限 < u1
+  await Permission.findOrCreate({
+    where: { permission_id: p2.id },
+    defaults: { level: 1 }
+  });
+  ctx.body = sendRes('数据库已初始化，可能需要重启服务器')
 })
 router.post('/create', async (ctx, next) => {
   const { user_id = null, weapp_id = null, alipay_id = null } = ctx.request.body

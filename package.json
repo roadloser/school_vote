@@ -9,6 +9,7 @@
     "css": "less"
   },
   "scripts": {
+    "server": "cd ./server/ && yarn start",
     "build:weapp-win": "taro build --type weapp",
     "build:alipay-win": "taro build --type alipay",
     "build:h5-win": "taro build --type h5",

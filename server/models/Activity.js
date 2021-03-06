@@ -3,7 +3,7 @@
  * @Author: roadloser
  * @Date: 2021-01-21 21:15:21
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-21 13:58:32
+ * @LastEditTime: 2021-03-06 02:26:41
  */
 const db = require('../db')
 const allowNull = true
@@ -11,6 +11,7 @@ const allowNull = true
 module.exports = db.defineModel('activity', {
   create_user: db.ID,  // 创建者
   act_name: db.STRING(100),  // 活动名称
+  act_info: db.STRING(100),  // 活动简介
   allowShow: db.BOOLEAN,  // 是否展示
   // act_create: db.BIGINT,  // 活动创建时间
   act_end: db.BIGINT,  // 活动结束时间

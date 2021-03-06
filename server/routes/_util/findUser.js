@@ -3,7 +3,7 @@
  * @Author: roadloser
  * @Date: 2021-01-25 13:56:13
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-20 22:45:12
+ * @LastEditTime: 2021-03-06 18:04:38
  */
 const Platform = require('../../models/Platform')
 const { getToken } = require('./token')
@@ -19,9 +19,8 @@ const { isNullObj } = require('./util')
 module.exports = async (params = null, isStrict = false) => {
   try {
     const ids = typeof params === 'string' ? getToken(params) : params
-    console.log('typeof params', typeof params);
     const { user_id = '', weapp_id = '', alipay_id = '', token_id = '' } = ids
-    if (token_id) return { id: token_id }
+    if (token_id) return { id: token_id, user_id }
     try {
       if (user_id) {
         if (isStrict) {
