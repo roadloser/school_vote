@@ -7,7 +7,7 @@
  */
 const httpStatus = {
   // token
-  toekn_err: 401000,  // token过期
+  token_err: 401000,  // token过期
 
   // common
   common_no_exist: 403001,  // xx不存在

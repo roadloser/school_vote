@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro';
-import { View, Text, Input } from '@tarojs/components'
+import { View, Text, Input, ScrollView } from '@tarojs/components'
 import { observer, inject } from 'mobx-react'
 import debounce from '@/util/debounce'
 import { ISearchResult, getSreachListAPI } from '@/api/index'
@@ -63,13 +63,12 @@ class Index extends Component {
   }
 
   changeInput: () => void = debounce(async({detail:{value}}) => {
-    if (!value) return
     const { page, limit } = this
-    const { data } = await getSreachListAPI({
+    const { data = [] } = value ? await getSreachListAPI({
       act_query: value,
       page,
       limit
-    }) || {}
+    }) : {}
     this.setState({
       inputValue: value,
       searchList: data
@@ -109,19 +108,32 @@ class Index extends Component {
                 onClick={() => this.clearInput(true)}
               >{getLang('index').index_cancel}</Text>}
             </View>
-            {searchList.length > 0 &&
-              searchList.map((e,i) => 
-              <Menu
-                key={`searchList-${i}`}
-                title={e.act_name}
-                bottom={i >= searchList.length - 1}
-                // 
-                content={`${getLang().index_end_time}：${timeFormat(e.act_end, 'yyyy-MM-dd hh:mm')}`}
-                tips={`${Date.now() < e.act_end ? getLang().index_button_type_doing : getLang().index_button_type_done}`}
-                url={`${routes.activity}?aid=${e.id}`}
+            {searchList.length > 0 ?
+              <ScrollView
+                className='i-scrollview i-theme'
+                scrollY
+                style={{height: CSSRemainHeight(50)}}
               >
-              </Menu>
-            )}
+                {searchList.map((e,i) => 
+                  <Menu
+                    key={`searchList-${i}`}
+                    title={e.act_name}
+                    bottom={i >= searchList.length - 1}
+                    // 
+                    content={`${getLang().index_end_time}：${timeFormat(e.act_end, 'yyyy-MM-dd hh:mm')}`}
+                    tips={`${Date.now() < e.act_end ? getLang().index_button_type_doing : getLang().index_button_type_done}`}
+                    url={`${routes.activity}?aid=${e.id}`}
+                  >
+                  </Menu>
+                )}
+              </ScrollView> : <View
+                className='i-default i-theme'
+                style={{height: CSSRemainHeight(50)}}
+              >
+                {!inputValue && <Text className='i-default-text'>快去搜索活动吧~</Text>}
+                {inputValue && <Text className='i-default-text'>无匹配活动</Text>}
+              </View>
+            }
 
           </View>
         }

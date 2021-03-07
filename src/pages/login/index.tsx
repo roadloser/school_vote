@@ -65,6 +65,7 @@ export default function Login(props: IProps) {
     if (code === 200) {
       const { token, user_info } = data
       setStorageSync('token', token)
+      setStorageSync('userInfo', user_info)
       user.setToken(token)
       user.setLogin(true)
       user.setUserInfo(user_info)

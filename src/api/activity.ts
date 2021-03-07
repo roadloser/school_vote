@@ -3,7 +3,7 @@ import { ajaxGet, ajaxPost } from './../util/_http';
  * @Author: roadloser
  * @Date: 2020-12-19 22:49:29
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-06 22:54:49
+ * @LastEditTime: 2021-03-07 04:28:42
  */
 export interface IParticipant {
   name: string // 候选人姓名
@@ -34,6 +34,10 @@ export const createActivityAPI = opt => {
 
 export const getActivityAPI = opt => {
   return ajaxGet('/api/activity', opt)
+}
+
+export const signupAPI = (opt) => {
+  return ajaxPost('/api/activity/signup', opt)
 }
 
 export const voteAPI = (opt) => {

@@ -3,16 +3,33 @@
  * @Description: 封装ajax
  * @Date: 2021-02-26 17:54:00
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-07 00:56:27
+ * @LastEditTime: 2021-03-07 05:36:02
  */
 import user from '@/store/user';
 import Taro from '@tarojs/taro';
 import {
-  hostAddress
+  hostAddress, routes
 } from '../config/routes';
 import {
-  isH5
+  isH5, navigate
 } from './system';
+
+export const httpStatus = {
+  // token
+  token_err: 401000,  // token过期
+
+  // common
+  common_no_exist: 403001,  // xx不存在
+  common_exist: 403002,  // xx已存在
+
+  // user
+  user_pwd_err: 403101,  // 密码有误
+  user_no_permission: 403102,  // 用户无权限
+  
+  // 传参有误
+  null_exist: 400100,  // 重要参数未传
+  validation_failed: 400101,  // 所传参数验证失败
+}
 
 // 不想在config/index设置proxy
 function ajaxH5(opt) {
@@ -107,7 +124,7 @@ export const ajaxPost = (url = '', data = {}, header = {}, opt = {}) => {
     header,
     ...opt
   }
-  return ajaxFn(obj)
+  return interceptor(obj)
 }
 
 export const ajaxGet = (url = '', data = {}, header = {}, opt = {}) => {
@@ -118,5 +135,14 @@ export const ajaxGet = (url = '', data = {}, header = {}, opt = {}) => {
     header,
     ...opt
   }
-  return ajaxFn(obj)
+  return interceptor(obj)
+}
+
+async function interceptor (obj) {
+  const res = await ajaxFn(obj)
+  if (res.code === httpStatus.token_err) {
+    await Taro.showToast({ title: res.msg })
+    await setTimeout(() => navigate(routes.login), 1500)
+  }
+  return res
 }

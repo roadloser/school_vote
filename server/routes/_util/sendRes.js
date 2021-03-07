@@ -3,7 +3,7 @@
  * @Author: roadloser
  * @Date: 2021-01-25 20:32:19
  * @LastEditors: roadloser
- * @LastEditTime: 2021-02-19 21:27:54
+ * @LastEditTime: 2021-03-07 06:07:57
  */
 const sendRes = (res, code = 200) => {
   let resObj = { code, msg: '' }
@@ -11,7 +11,7 @@ const sendRes = (res, code = 200) => {
     resObj.msg = res.msg || ''
     resObj.code = res.code || code
     if ('data' in res) {
-      resObj = { ...res }
+      resObj = { ...resObj, ...res }
     }
     // sql err
     else if ('original' in res) {

@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2020-11-25 15:23:19
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-06 19:18:13
+ * @LastEditTime: 2021-03-07 03:34:49
  */
 export default {
   pages: [
@@ -37,7 +37,7 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
+    navigationBarBackgroundColor: '#ecffeb',
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black',
     backgroundColor: '#fff',

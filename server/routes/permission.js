@@ -18,7 +18,7 @@ router.post('/create', async(ctx, next) => {
   const { level = 1 } = ctx.request.body
   const { id, type } = await findUser(authorization)
   if (type === 3) {
-    ctx.body = sendRes('token已过期', httpStatus.toekn_err)
+    ctx.body = sendRes('token已过期', httpStatus.token_err)
     return await next()
   }
   const [perRes, created] = await Permission.findOrCreate({

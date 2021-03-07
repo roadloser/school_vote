@@ -4,7 +4,7 @@
  * @Author: roadloser
  * @Date: 2021-01-20 10:27:10
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-06 13:10:31
+ * @LastEditTime: 2021-03-07 16:11:54
  */
 const router = require('koa-router')()
 const user = require('./user')
@@ -15,7 +15,7 @@ const findUser = require('./_util/findUser')
 const sendRes = require('./_util/sendRes')
 const httpStatus = require('./_util/httpStatus')
 const { setToken, getToken } = require('./_util/token')
-const { User } = require('../model')
+const { User, Permission } = require('../model')
 
 // login
 router.get('/login', async (ctx, next) => {
@@ -44,12 +44,18 @@ router.get('/login', async (ctx, next) => {
   }
   // 设置token
   const token = setToken({ token_id: ids, user_id })
+  // 权限
+  const level = await Permission.sum(
+    'level',
+    { where: { permission_id: ids }}
+  )
   ctx.body = sendRes({
     token,
     id: ids,
     user_info: {
       ...user[0].user_info,
       name: user[0].username,
+      level,
       gender: user[0].gender
     },
     msg: '登录成功'

@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-02-19 11:16:49
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-07 00:32:18
+ * @LastEditTime: 2021-03-07 05:51:19
  */
 const router = require('koa-router')()
 const {
@@ -41,7 +41,7 @@ const getActivity = async (act_id, needCreatedTime = false) => {
 }
 
 // 获取user信息
-const getUser = async (ids, attributes = ['name', 'gender', 'user_info']) => {
+const getUser = async (ids, attributes = [['username', 'name'], 'gender', 'user_info']) => {
   const userRes = await User.findOne({
     where: { ids },
     attributes
@@ -102,12 +102,15 @@ router.get('/', async (ctx, next) => {
   for (let i = 0; i < parList.length; i++) {
     const par = (parList[i] && parList[i].dataValues) || {};
     const user = await getUser(par.player_id)
-    const poll = await Vote.count({
+    const [pollObj] = await Vote.findAll({
       where: {
         player_id: par.player_id,
         act_id
-      }
+      },
+      attributes: [[sequelize.fn('SUM', sequelize.col('count')), 'poll']]
     })
+    const poll = (pollObj.dataValues && pollObj.dataValues.poll) || 0
+    console.log('poll\n\n\n', poll, pollObj);
     participants.push({
       ...user,
       ...par,
@@ -142,7 +145,7 @@ router.post('/create', async (ctx, next) => {
     type
   } = await findUser(authorization)
   if (type === 3) {
-    ctx.body = sendRes('token已过期', httpStatus.toekn_err)
+    ctx.body = sendRes('token已过期', httpStatus.token_err)
     return await next()
   }
   // 检查权限
@@ -219,7 +222,7 @@ router.post('/signup', async (ctx, next) => {
     type
   } = await findUser(authorization)
   if (type === 3) {
-    ctx.body = sendRes('token已过期，请重新登录', httpStatus.toekn_err)
+    ctx.body = sendRes('token已过期，请重新登录', httpStatus.token_err)
     return await next()
   }
   const {
@@ -280,7 +283,7 @@ router.get('/vote', async (ctx, next) => {
     type
   } = await findUser(authorization)
   if (type === 3) {
-    ctx.body = sendRes('需要登录才能投票', httpStatus.toekn_err)
+    ctx.body = sendRes('token已过期，请重新登录', httpStatus.token_err)
     return await next()
   }
   // 没传关键参数
@@ -344,7 +347,10 @@ router.get('/vote', async (ctx, next) => {
   await Vote.update({ count }, {
     where: { id: voteRes.id }
   })
-  ctx.body = sendRes(msg)
+  ctx.body = sendRes({
+    msg,
+    data: count
+  })
 })
 
 module.exports = router

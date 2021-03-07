@@ -25,16 +25,19 @@
     color: #808080;
     text-align: center;
     font-size: @fz-h2;
-    border-bottom: 2px solid #808080;
+    border-bottom: 2px solid #9a9a9a;
   }
   &-info {
     width: 90%;
+    background-color: rgba(255,255,255,0.2);
     text-indent: 2em;
     height: 180px;
     padding: 10px;
-    border: 2px solid #808080;
+    // border: 2px solid #9a9a9a;
     border-radius: 20px;
     font-size: @fz-text;
+    box-shadow: 0 0 4px #808080;
+    overflow: hidden;
   }
 }
 
@@ -51,8 +54,9 @@
 .act-card {
   .flex();
   flex-direction: column;
-  margin: 20px 0;
-  background-color: #fff;
+  padding: 60px 0;
+  margin-bottom: 30px;
+  background-color: #ecffeb;
 
   &-vote {
     justify-content: center;

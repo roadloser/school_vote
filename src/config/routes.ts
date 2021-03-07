@@ -2,11 +2,11 @@
  * @Author: roadloser
  * @Date: 2020-12-19 21:34:49
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-06 19:20:31
+ * @LastEditTime: 2021-03-07 03:01:56
  */
 
 export const hostAddress = {
-  host: 'http://127.0.0.1',
+  host: 'http://172.19.44.250',
   port: '3000'
 }
 

@@ -3,7 +3,7 @@ import { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView, Input } from '@tarojs/components';
 import { getActivityAPI, IParticipant } from '@/api/activity';
 import { debounceFn } from '@/util/debounce';
-import { CSSRemainHeight, navigate } from '@/util/system';
+import { CSSRemainHeight, isH5, navigate, setTitle } from '@/util/system';
 import { routes } from '@/config/routes';
 import { getLang, clickVote } from './_util';
 import transfer from '@/util/transfer';
@@ -37,6 +37,8 @@ export default class Activity extends Component<IProps, IState> {
   componentDidMount() {
     const { aid = '' } = getCurrentInstance().router!.params
     this.activity_id = aid
+  }
+  componentDidShow() {
     this.getActivity()
   }
 
@@ -55,6 +57,7 @@ export default class Activity extends Component<IProps, IState> {
         participants = [],
         sign_end
       } = data
+      setTitle(act_name)
       this.setState({
         act_name,
         act_info,
@@ -88,7 +91,7 @@ export default class Activity extends Component<IProps, IState> {
     return (
       <View className='activity'>
         <View className='act-header'>
-          <Text className='act-header-title act-header-mt'>{act_name}</Text>
+          {isH5 && <Text className='act-header-title act-header-mt'>{act_name}</Text>}
           <Text className='act-header-info act-header-mt'>{act_info}</Text>
           {/* <View className='act-header-button' onClick={() => this.toEntryForm()}>{getLang().activity_sign_up}</View> */}
           <Input className='act-header-input act-header-mt' placeholder={'搜索候选人'} />
@@ -97,7 +100,7 @@ export default class Activity extends Component<IProps, IState> {
         {activityList.length > 0 ? <ScrollView
           className='act-wrap'
           scrollY
-          style={{height: CSSRemainHeight(0, false)}}
+          style={{height: CSSRemainHeight(225, false)}}
         >
           {activityList.length > 0 && activityList.map((e, i) => {
             return <View
@@ -115,6 +118,12 @@ export default class Activity extends Component<IProps, IState> {
                     clickVote({
                       player_id: e.player_id,
                       act_id: this.activity_id
+                    }, poll => {
+                      this.setState({
+                        activityList: this.state.activityList.map(
+                          ({player_id}) => player_id === e.player_id ? {...e, poll} : e
+                        )
+                      })
                     })
                   }
                 }
