@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-02-19 11:16:49
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-07 05:51:19
+ * @LastEditTime: 2021-03-07 17:35:33
  */
 const router = require('koa-router')()
 const {
@@ -332,7 +332,7 @@ router.get('/vote', async (ctx, next) => {
       break;
     case 1: 
     default:
-      const voted_times = await Vote.count({
+      const voted_times = await Vote.sum('count', {
         where: {
           act_id,
           user_id: uid
