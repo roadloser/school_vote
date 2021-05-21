@@ -1,0 +1,21 @@
+@import '../../../../reset.less';
+
+.i-scrollview {
+  /* #if ndef rn */
+  padding: 0 34px;
+  box-sizing: border-box;
+  /* #endif */
+  /* #if def alipay */
+  width: 100%;
+  /* #endif */
+}
+
+.i-default {
+  width: 100%;
+  .flex();
+  justify-content: center;
+  &-text {
+    color: #808080;
+    font-size: @fz-text;
+  }
+}

@@ -2,7 +2,7 @@
  * @Author: roadloser
  * @Date: 2021-02-19 11:16:49
  * @LastEditors: roadloser
- * @LastEditTime: 2021-03-07 17:35:33
+ * @LastEditTime: 2021-05-21 18:34:13
  */
 const router = require('koa-router')()
 const {
@@ -51,28 +51,47 @@ const getUser = async (ids, attributes = [['username', 'name'], 'gender', 'user_
 /**
  * @description: 活动列表
  */
-router.get('List', async (ctx) => {
+router.get('List', async (ctx, next) => {
   const {
     limit,
     page,
+    isMyCreated,  // 是否是我发布的活动
     act_query
   } = ctx.query
+
+  const {
+    authorization
+  } = ctx.header
+  const {
+    id,
+    type
+  } = await findUser(authorization)
+  if (type === 3 && !act_query) {
+    ctx.body = sendRes('token已过期', httpStatus.token_err)
+    return await next()
+  }
+  let where = {
+    allowShow: true,
+    act_name: {
+      [Op.like]: `%${ act_query }%`
+    }
+  }
+  // 是否有user (查看活动接口) 需要完善验证
+  if (id && isMyCreated) {
+    console.log('查看活动接口\n\n')
+    where = { create_user: id }
+  }
+
   // 获取列表
   const res = await Activity.findAll({
+    where,
     ...packageSqlPage({
       page,
       limit
     }),
     attributes: {
       exclude
-    },
-    where: {
-      allowShow: true,
-      act_name: {
-        [Op.like]: `%${ act_query }%`
-      }
-    }
-  })
+    }})
   ctx.body = sendRes(res)
 })
 
@@ -338,7 +357,7 @@ router.get('/vote', async (ctx, next) => {
           user_id: uid
         }
       })
-      if (limit_times < voted_times) {
+      if (limit_times <= voted_times) {
         ctx.body = sendRes(`已达到该活动投票${limit_times}次限制`, httpStatus.validation_failed)
         return await next()
       }
