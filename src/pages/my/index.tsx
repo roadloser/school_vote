@@ -29,9 +29,9 @@ export default function My (props: IProps) {
   return (
     <View className='my' style={{height: CSSRemainHeight(0)}}>
       {level && <Menu title='活动发布' url={routes.activityCreate}/>}
-      {level && <Menu title='查看已发布活动' adaptiveWidth url='#'/>}
+      {level && <Menu title='查看已发布活动' adaptiveWidth url={routes.myPublishedActivities}/>}
       {level > 1 && <Menu title='权限赋予' url='#'/>}
-      <Menu title='我的信息' url='/pages/my/_my/vote_list/index'/>
+      <Menu title='我的信息' url='#'/>
       <Menu title='清除缓存' onClick={claar} bottom/>
     </View>
   )

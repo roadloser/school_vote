@@ -116,6 +116,7 @@ class Index extends Component {
               >
                 {searchList.map((e,i) => 
                   <Menu
+                    adaptiveWidth
                     key={`searchList-${i}`}
                     title={e.act_name}
                     bottom={i >= searchList.length - 1}
