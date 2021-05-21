@@ -121,7 +121,7 @@ export default class Activity extends Component<IProps, IState> {
                     }, poll => {
                       this.setState({
                         activityList: this.state.activityList.map(
-                          ({player_id}) => player_id === e.player_id ? {...e, poll} : e
+                          item => item.player_id === e.player_id ? {...item, poll} : item
                         )
                       })
                     })
